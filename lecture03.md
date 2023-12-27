@@ -1,7 +1,7 @@
 
 # 第三回課題
 ## 1.サンプルアプリケーションのデプロイ  
-![デプロイ](ピクチャ/lecture03-1)
+![デプロイ](img/lecture03-1.png)
 ## 2.APサーバー
 name:Puma version:5.6.5  
 ```bin/cloud9_dev```
