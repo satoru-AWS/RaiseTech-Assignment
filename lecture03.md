@@ -5,13 +5,16 @@
 ## 2.APサーバー
 name:Puma version:5.6.5  
 ```bin/cloud9_dev```
+APサーバーの終了
+![終了](img/lecture03-2.png)
 ## 3.DBサーバー  
 name:MySQL version:8.0.35  
 ```mysql -u root -p```  
 停止  
 ```sudo service mysqld stop```  
 再開  
-```sudo service mysqld start```  
+```sudo service mysqld start```
+![停止](img/lecture03-2.png)  
 ## 4.Rails構成管理ツール
 **bundler**  
 bundlerとはgemのバージョンやgemの依存関係を管理するツール。あるgemを使うために別のあるgemを使う必要がるといった関係を依存関係という。bundlerは依存関係が解決されたgemを一括でインストールしてくれ、複数人（台）のPCで作業する際も同じバージョンのgemを一括でインストールすることができる。
