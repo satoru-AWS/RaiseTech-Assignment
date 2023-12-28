@@ -4,7 +4,7 @@
 ![デプロイ](img/lecture03-1.png)
 ## 2.APサーバー
 name:Puma version:5.6.5  
-```bin/cloud9_dev```
+```bin/cloud9_dev```  
 APサーバーの終了
 ![終了](img/lecture03-2.png)
 ## 3.DBサーバー  
