@@ -3,6 +3,7 @@
 ## 1.サンプルアプリケーションのデプロイ 
 ![スタート](img/lecture03-4.png) 
 ![デプロイ](img/lecture03-1.png)
+![入力](img/lecture03-5.png)
 ## 2.APサーバー
 name:Puma version:5.6.5  
 ```bin/cloud9_dev```  
