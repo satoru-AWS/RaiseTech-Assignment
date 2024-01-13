@@ -15,7 +15,7 @@
 ![RDS2](img/lecture04-5.png)    
 ## 4.セキュリティグループ  
 ### 4-1.EC2  
-![EC2sg-1](img/lecture04-6.png)  
+![EC2sg-1](img/lecture04-17.png)  
 ![EC2sg-2](img/lecture04-7.png)  
 ### 4-2.RDS  
 ![RDSsg-1](img/lecture04-9.png)  
