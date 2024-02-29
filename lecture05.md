@@ -1,4 +1,5 @@
-# 組み込みサーバーでデプロイ
+# 第５回課題講義  
+## 組み込みサーバーでデプロイ
 ```
 # パッケージのバージョンアップ
 sudo yum update  
@@ -68,7 +69,7 @@ rails s -b 0.0.0.0
 # ブラウザでアクセス  
 EC2のパブリックID：3000
 ```  
-# Nginx  
+## Nginx  
 ```  
 # インストール  
 sudo amazon-linux-extras install nginx1  
@@ -91,7 +92,7 @@ sudo tail /var/log/nginx/error.log
 ```
 →nginxの起動を確認：welcome to nginx!
 
-# Unicorn  
+## Unicorn  
 ```  
 # Gemfileに追加  
 vim Gemfile  
@@ -121,28 +122,32 @@ sudo vim /etc/nginx/conf.d/rails.conf
 # ブラウザで確認  
 EC2パブリックIP:80  
 ```  
+![Nginx起動](img2/lecture5-1.png)   
+![Unicorn起動](img2/lecture5-2.png)  
+![デプロイ](img2/lecture5-3.png)  
 
 ## ALBの追加  
-1.ターゲットグループとセキュリティグループを作成  
-2.ELB(ALB）を新規作成  
-3.EC2のセキュリティグループにALBのセキュリティグループをポート80で追加  
-4.config/environmets/development.rbに追加  
-```config.hosts << "ALBのDNS名"```  
-*config/environments/development.rbについて 
+1. ターゲットグループとセキュリティグループを作成  
+1. ELB(ALB）を新規作成  
+1. EC2のセキュリティグループにALBのセキュリティグループをポート80で開放 
+1. config/environmets/development.rbに追加  
+ `config.hosts << "ALBのDNS名"`  
+***config/environments/development.rbについて***  
 Railsアプリケーションを作成するとconfigディレクトリ直下にenvironmentディレクトリとその配下にdevelopment.rb、production.eb、test.rbフォルダが作成される 
-config: 設定ファイルを保存するディレクトリ  
-environments:環境毎の設定ファイルを保存するディレクトリ  
-development.rb:開発環境の設定ファイル  
-5.NginxとUnicornを起動  
-6.ALBのDNS名でブラウザを確認  
+ config: 設定ファイルを保存するディレクトリ  
+ environments:環境毎の設定ファイルを保存するディレクトリ  
+ development.rb:開発環境の設定ファイル  
+5. NginxとUnicornを起動  
+6. ALBのDNS名でブラウザを確認  
+![ALB](img2/lecture5-6.png) 
 
 ## S3の追加  
-1.バケットを作成  
-2.作成したバケットにのみ権限付与するIAMポリシーを作成  
-3.IAMユーザーの作成  
-4.アクセスキーとシークレットアクセスキーを作成  
-5.config/environments/development.rbの編集  
+1. バケットを作成  
+1. 作成したバケットにのみ権限付与するIAMポリシーを作成  
+1. IAMユーザーの作成  
+1. アクセスキーとシークレットアクセスキーを作成  
+1. config/environments/development.rbの編集  
 config.active_storage.service = :local  
 →config.active_storage.service = amazon  
-6.config/storage.ymlの編集  
-
+1. config/storage.ymlの編集  
+![S3](img2/lecture5-7.png) 
