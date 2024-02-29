@@ -69,6 +69,8 @@ rails s -b 0.0.0.0
 # ブラウザでアクセス  
 EC2のパブリックID：3000
 ```  
+![組み込み](img2/lecture5-8.png) 
+
 ## Nginx  
 ```  
 # インストール  
@@ -121,6 +123,10 @@ sudo vim /etc/nginx/conf.d/rails.conf
 
 # ブラウザで確認  
 EC2パブリックIP:80  
+
+# 画像が表示されない場合  
+sudo yum -y install ImageMagick
+convert -version  
 ```  
 Nginx起動確認  
 ![Nginx起動](img2/lecture5-1.png)   
@@ -138,7 +144,7 @@ Unicorn起動確認
 1. config/environmets/development.rbに追加  
  `config.hosts << "ALBのDNS名"`  
 ***config/environments/development.rbについて***  
-Railsアプリケーションを作成するとconfigディレクトリ直下にenvironmentディレクトリとその配下にdevelopment.rb、production.eb、test.rbフォルダが作成される 
+Railsアプリケーションを作成するとconfigディレクトリ直下にenvironmentディレクトリとその配下にdevelopment.rb、production.eb、test.rbフォルダが作成される  
  config: 設定ファイルを保存するディレクトリ  
  environments:環境毎の設定ファイルを保存するディレクトリ  
  development.rb:開発環境の設定ファイル  
@@ -155,4 +161,8 @@ Railsアプリケーションを作成するとconfigディレクトリ直下に
 config.active_storage.service = :local  
 →config.active_storage.service = amazon  
 1. config/storage.ymlの編集  
+
+IAMポリシー  
+![S3IAMポリシー](img2/lecture5-9.png)  
+ 
 ![S3](img2/lecture5-7.png) 
