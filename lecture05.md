@@ -122,8 +122,13 @@ sudo vim /etc/nginx/conf.d/rails.conf
 # ブラウザで確認  
 EC2パブリックIP:80  
 ```  
+Nginx起動確認  
 ![Nginx起動](img2/lecture5-1.png)   
+
+Unicorn起動確認  
 ![Unicorn起動](img2/lecture5-2.png)  
+
+ブラウザで確認  
 ![デプロイ](img2/lecture5-3.png)  
 
 ## ALBの追加  
