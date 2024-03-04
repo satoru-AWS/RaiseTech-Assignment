@@ -165,4 +165,8 @@ config.active_storage.service = :local
 IAMポリシー  
 ![S3IAMポリシー](img2/lecture5-9.png)  
  
-![S3](img2/lecture5-7.png) 
+![S3](img2/lecture5-7.png)  
+
+## 構成図  
+
+![構成図](img2/課題５.drawio.png)  
