@@ -9,6 +9,7 @@ Resources:
       Tags:
         - Key: Name
           Value: VPCfromCF
+
 # サブネット（パブリック）の作成
   SubnetPb1:
     Type: AWS::EC2::Subnet
@@ -47,6 +48,7 @@ Resources:
       Tags:
         - Key: Name
           Value: SubnetPv2fromCF
+          
 # インターネットゲートウェイの作成
   Task10igw:
     Type: AWS::EC2::InternetGateway

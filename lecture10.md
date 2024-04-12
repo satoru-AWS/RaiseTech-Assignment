@@ -12,3 +12,6 @@ Security: セキュリティグループ
 [Network](Task10-CF/Task10-Network.yml)  
 [Application](Task10-CF/Task10-Application.yml)  
 [Security](Task10-CF/Task10-Security.yml)  
+
+## スタック  
+![スタック](img2/lecture10.png)  

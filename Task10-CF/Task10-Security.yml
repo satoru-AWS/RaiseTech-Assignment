@@ -9,8 +9,8 @@ Parameters:
     Description: 0.0.0.0/0
     Type: String
     Default: 0.0.0.0/0
-# EC2のセキュリティグループを作成
 Resources: 
+# EC2のセキュリティグループを作成
   EC2secGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
