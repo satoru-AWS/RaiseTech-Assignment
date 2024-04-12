@@ -1,0 +1,162 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CF-Application
+Parameters: 
+  KeyName: 
+    Description: The EC2 Key Pair to allow SSH access to the instance
+    Type: String
+
+  DBpassword:
+    Description: DateBase Password
+    Type: String
+    NoEcho: true
+
+  VPCId:
+    Description: VPCID 
+    Type: AWS::EC2::VPC::Id
+
+Resources: 
+# EC２の作成
+  Task10EC2:
+    Type: AWS::EC2::Instance
+    Properties:     
+      KeyName: !Ref KeyName
+      ImageId: ami-0253ce315ad0c9655
+      InstanceType: t2.micro
+      Monitoring: false
+      NetworkInterfaces: 
+        - AssociatePublicIpAddress: true
+          SubnetId: !ImportValue SubnetPb1Name
+          DeviceIndex: "0"
+          GroupSet: 
+            - !ImportValue EC2SGName
+      UserData: !Base64 |
+        #!/bin/bash
+        sudo yum update -y
+      Tags:
+        - Key: Name
+          Value: EC2fromCF
+
+# RDSの作成
+  SubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: db
+      SubnetIds:
+        - !ImportValue SubnetPv1Name
+        - !ImportValue SubnetPv2Name
+      Tags:
+        - Key: Name
+          Value: DBSubnetGroup
+  Task10DB:
+    Type: AWS::RDS::DBInstance
+    Properties:
+      AllocatedStorage: 20
+      DBInstanceClass: db.t3.micro
+      AvailabilityZone: "ap-northeast-1a"
+      DBSubnetGroupName: !Ref SubnetGroup
+      Engine: mysql
+      EngineVersion: "8.0.35"
+      MasterUsername: admin
+      MasterUserPassword: !Ref DBpassword
+      MultiAZ: false
+      StorageType: gp2
+      VPCSecurityGroups:
+        -  !ImportValue RDSSGName
+      Tags:
+        - Key: Name
+          Value: RDSforMySQLfromCF
+    
+# ALBの作成
+  Task10ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: Task10ALB
+      Scheme: internet-facing
+      Type: application
+      IpAddressType: ipv4
+      SecurityGroups: 
+        - !ImportValue ELBSGName
+      Subnets: 
+        - !ImportValue SubnetPb1Name
+        - !ImportValue SubnetPb2Name
+      Tags: 
+        - Key: Name
+          Value: ELBfromCF
+# ターゲットグループの作成
+  Task10tg:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    DependsOn: Task10EC2
+    Properties:
+      HealthCheckEnabled: true
+      HealthCheckIntervalSeconds: 30
+      HealthCheckPath: /
+      HealthCheckPort: traffic-port
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 5
+      IpAddressType: ipv4
+      Matcher: 
+        HttpCode: 200
+      Name: Task10tgfromCF
+      Port: 80
+      Protocol: HTTP
+      ProtocolVersion: HTTP1
+      Tags: 
+        - Key: Name
+          Value: TGfromCF
+      Targets: 
+        - Id: !Ref Task10EC2
+      TargetType: instance
+      UnhealthyThresholdCount: 2
+      VpcId: !ImportValue VPCName
+# リスナーの設定
+  Task10Listener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions: 
+        - TargetGroupArn: !Ref Task10tg
+          type: forward
+      LoadBalancerArn: !Ref Task10ALB
+      Port: 80
+      Protocol: HTTP
+
+# IAMロール
+  Task10S3iamRole:
+    Type: AWS::IAM::Role
+    Properties:
+      Path: /
+      AssumeRolePolicyDocument: 
+         Version: "2012-10-17"
+         Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      ManagedPolicyArns:
+        -  arn:aws:iam::aws:policy/AmazonS3FullAccess
+  iamInstanceProfile:
+      Type: AWS::IAM::InstanceProfile
+      Properties:
+        Path: /
+        Roles:
+          - !Ref Task10S3iamRole
+
+# S3の作成
+  Task10s3Bucket:
+    Type: AWS::S3::Bucket
+    Properties: 
+      BucketName: task10-s3-cf
+      PublicAccessBlockConfiguration:
+          BlockPublicAcls: true
+          BlockPublicPolicy: true
+          IgnorePublicAcls: true
+          RestrictPublicBuckets: true
+      BucketEncryption:
+        ServerSideEncryptionConfiguration: 
+          - ServerSideEncryptionByDefault: 
+              SSEAlgorithm: AES256
+      Tags:
+        - Key: Name
+          Value: S3fromCF 
