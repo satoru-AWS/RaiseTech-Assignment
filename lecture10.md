@@ -9,6 +9,6 @@ Application: EC2 RDS ELB S3
 Security: セキュリティグループ  
 
 ## テンプレート  
-[Network](Task10-CF/Task10-NetworkLayer.yml)  
-[Application](Task10-CF/Task10-ApplicationLayer.yml)  
-[Security](Task10-CF/Task10-SecurityLayer.yml)  
+[Network](Task10-CF/Task10-Network.yml)  
+[Application](Task10-CF/Task10-Application.yml)  
+[Security](Task10-CF/Task10-Security.yml)  
