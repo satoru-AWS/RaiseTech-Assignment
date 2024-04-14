@@ -131,4 +131,3 @@ Outputs:
     Value: !Ref Task10SubnetPv2
     Export: 
       Name: Task10SubnetPv2ID
-      

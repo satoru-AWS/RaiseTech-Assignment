@@ -80,4 +80,3 @@ Outputs:
     Value:  !Ref Task10ALBsecGroup
     Export: 
       Name: Task10ELBSGresourceID
-      
