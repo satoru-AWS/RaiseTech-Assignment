@@ -5,18 +5,18 @@ Parameters:
     Description: MyIPadress
     Type: String
     Default: 14.10.82.193/32
-  IP:
+  DefaultIP:
     Description: 0.0.0.0/0
     Type: String
     Default: 0.0.0.0/0
 Resources: 
 # EC2のセキュリティグループを作成
-  EC2secGroup:
+  Task10EC2secGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: EC2-SG
       GroupDescription: EC2-SG
-      VpcId:  !ImportValue VPCName
+      VpcId:  !ImportValue Task10VPCID
       SecurityGroupIngress:
         - IpProtocol: tcp
           Fromport: 22
@@ -25,39 +25,39 @@ Resources:
         - IpProtocol: tcp
           Fromport: 80
           Toport: 80
-          CidrIp: !Ref IP
+          CidrIp: !Ref DefaultIP
       Tags:
         - Key: Name
           Value: EC2SGfromCF
 
 # RDSのセキュリティグループを作成
-  RDSsecGroup:
+  Task10RDSsecGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: RDS_sg
       GroupDescription: RDS
-      VpcId: !ImportValue VPCName
+      VpcId: !ImportValue Task10VPCID
       SecurityGroupIngress:
         IpProtocol: tcp
         Fromport: 3306
         Toport: 3306
-        SourceSecurityGroupID: !Ref EC2secGroup
+        SourceSecurityGroupID: !Ref Task10EC2secGroup
       Tags:
         - Key: Name
           Value: RDSSGfromCF
 
 # ELBのセキュリティグループを作成
-  ALBsecGroup:
+  Task10ALBsecGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupName: alb_sg 
       GroupDescription: alb 
-      VpcId: !ImportValue VPCName
+      VpcId: !ImportValue Task10VPCID
       SecurityGroupIngress:
         - IpProtocol: tcp
           Fromport: 80
           Toport: 80
-          CidrIp: !Ref IP
+          CidrIp: !Ref DefaultIP
       Tags:
         - Key: Name
           Value: ALBfromCF
@@ -65,16 +65,19 @@ Resources:
 Outputs:
   EC2SG:
     Description: Information about the value
-    Value: !Ref EC2secGroup
+    Value: !Ref Task10EC2secGroup
     Export: 
-      Name: EC2SGName
+      Name: Task10EC2SGresourceID
+
   DBSG:
     Description: Information about the value
-    Value:  !Ref RDSsecGroup
+    Value:  !Ref Task10RDSsecGroup
     Export: 
-      Name: RDSSGName
+      Name: Task10RDSSGresourceID
+
   ELBSG:
     Description: Information about the value
-    Value:  !Ref ALBsecGroup
+    Value:  !Ref Task10ALBsecGroup
     Export: 
-      Name: ELBSGName
+      Name: Task10ELBSGresourceID
+      

@@ -11,7 +11,7 @@ Resources:
           Value: VPCfromCF
 
 # サブネット（パブリック）の作成
-  SubnetPb1:
+  Task10SubnetPb1:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: "ap-northeast-1a"
@@ -20,7 +20,7 @@ Resources:
       Tags:
         - Key: Name
           Value: SubnetPb1fromCF
-  SubnetPb2:
+  Task10SubnetPb2:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: "ap-northeast-1c"
@@ -30,7 +30,7 @@ Resources:
         - Key: Name
           Value: SubnetPb2fromCF
 # サブネット（プライベート）の作成
-  SubnetPv1:
+  Task10SubnetPv1:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: "ap-northeast-1a"
@@ -39,7 +39,7 @@ Resources:
       Tags:
         - Key: Name
           Value: SubnetPv1fromCF
-  SubnetPv2:
+  Task10SubnetPv2:
     Type: AWS::EC2::Subnet
     Properties:
       AvailabilityZone: "ap-northeast-1c"
@@ -56,7 +56,7 @@ Resources:
       Tags:
         - Key: Name
           Value: IGWfromCF
-  AttachGateway:
+  Task10AttachGateway:
     Type: AWS::EC2::VPCGatewayAttachment
     Properties:
       VpcId: !Ref Task10VPC
@@ -77,28 +77,28 @@ Resources:
         - Key: Name
           Value: RouteTable-Pb02fromCF
 # インターネットゲートウェイへルートテーブルをアタッチ
-  Route01:
+  Task10Route01:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref Task10routeTable01
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref Task10igw
-  Route02:
+  Task10Route02:
     Type: AWS::EC2::Route
     Properties:
       RouteTableId: !Ref Task10routeTable02
       DestinationCidrBlock: 0.0.0.0/0
       GatewayId: !Ref Task10igw
 # ルートテーブルへサブネットを関連付け
-  routeTableAssoc01:
+  Task10routeTableAssoc01:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref SubnetPb1
+      SubnetId: !Ref Task10SubnetPb1
       RouteTableId: !Ref Task10routeTable01
-  routeTableAssoc02:
+  Task10routeTableAssoc02:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
-      SubnetId: !Ref SubnetPb2
+      SubnetId: !Ref Task10SubnetPb2
       RouteTableId: !Ref Task10routeTable02
 
 Outputs:
@@ -106,28 +106,29 @@ Outputs:
     Description: Information about the value
     Value: !Ref Task10VPC
     Export: 
-      Name: VPCName
+      Name: Task10VPCID
 
   SubnetPb1:
     Description: Information about the value
-    Value: !Ref SubnetPb1
+    Value: !Ref Task10SubnetPb1
     Export: 
-      Name: SubnetPb1Name
+      Name: Task10SubnetPb1ID
 
   SubnetPb2:
     Description: Information about the value
-    Value: !Ref SubnetPb2
+    Value: !Ref Task10SubnetPb2
     Export: 
-      Name: SubnetPb2Name
+      Name: Task10SubnetPb2ID
   
   SubnetPv1:
     Description: Information about the value
-    Value: !Ref SubnetPv1
+    Value: !Ref Task10SubnetPv1
     Export: 
-      Name: SubnetPv1Name
+      Name: Task10SubnetPv1ID
 
   SubnetPv2:
     Description: Information about the value
-    Value: !Ref SubnetPv2
+    Value: !Ref Task10SubnetPv2
     Export: 
-      Name: SubnetPv2Name
+      Name: Task10SubnetPv2ID
+      

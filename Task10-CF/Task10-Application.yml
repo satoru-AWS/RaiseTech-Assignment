@@ -25,10 +25,10 @@ Resources:
       Monitoring: false
       NetworkInterfaces: 
         - AssociatePublicIpAddress: true
-          SubnetId: !ImportValue SubnetPb1Name
+          SubnetId: !ImportValue Task10SubnetPb1ID
           DeviceIndex: "0"
           GroupSet: 
-            - !ImportValue EC2SGName
+            - !ImportValue Task10EC2SGresourceID
       UserData: !Base64 |
         #!/bin/bash
         sudo yum update -y
@@ -37,13 +37,13 @@ Resources:
           Value: EC2fromCF
 
 # RDSの作成
-  SubnetGroup:
+  Task10SubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
       DBSubnetGroupDescription: db
       SubnetIds:
-        - !ImportValue SubnetPv1Name
-        - !ImportValue SubnetPv2Name
+        - !ImportValue Task10SubnetPv1ID
+        - !ImportValue Task10SubnetPv2ID
       Tags:
         - Key: Name
           Value: DBSubnetGroup
@@ -53,7 +53,7 @@ Resources:
       AllocatedStorage: 20
       DBInstanceClass: db.t3.micro
       AvailabilityZone: "ap-northeast-1a"
-      DBSubnetGroupName: !Ref SubnetGroup
+      DBSubnetGroupName: !Ref Task10SubnetGroup
       Engine: mysql
       EngineVersion: "8.0.35"
       MasterUsername: admin
@@ -61,7 +61,7 @@ Resources:
       MultiAZ: false
       StorageType: gp2
       VPCSecurityGroups:
-        -  !ImportValue RDSSGName
+        -  !ImportValue Task10RDSSGresourceID
       Tags:
         - Key: Name
           Value: RDSforMySQLfromCF
@@ -75,10 +75,10 @@ Resources:
       Type: application
       IpAddressType: ipv4
       SecurityGroups: 
-        - !ImportValue ELBSGName
+        - !ImportValue Task10ELBSGresourceID
       Subnets: 
-        - !ImportValue SubnetPb1Name
-        - !ImportValue SubnetPb2Name
+        - !ImportValue Task10SubnetPb1ID
+        - !ImportValue Task10SubnetPb2ID
       Tags: 
         - Key: Name
           Value: ELBfromCF
@@ -108,7 +108,7 @@ Resources:
         - Id: !Ref Task10EC2
       TargetType: instance
       UnhealthyThresholdCount: 2
-      VpcId: !ImportValue VPCName
+      VpcId: !ImportValue Task10VPCID
 # リスナーの設定
   Task10Listener:
     Type: AWS::ElasticLoadBalancingV2::Listener
