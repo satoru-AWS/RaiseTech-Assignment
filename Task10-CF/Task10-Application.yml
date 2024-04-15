@@ -10,10 +10,6 @@ Parameters:
     Type: String
     NoEcho: true
 
-  VPCId:
-    Description: VPCID 
-    Type: AWS::EC2::VPC::Id
-
 Resources: 
 # EC２の作成
   Task10EC2:
@@ -28,7 +24,7 @@ Resources:
           SubnetId: !ImportValue Task10SubnetPb1ID
           DeviceIndex: "0"
           GroupSet: 
-            - !ImportValue Task10EC2SGresourceID
+            - !ImportValue Task10EC2SGID
       UserData: !Base64 |
         #!/bin/bash
         sudo yum update -y
@@ -61,7 +57,7 @@ Resources:
       MultiAZ: false
       StorageType: gp2
       VPCSecurityGroups:
-        -  !ImportValue Task10RDSSGresourceID
+        -  !ImportValue Task10RDSSGID
       Tags:
         - Key: Name
           Value: RDSforMySQLfromCF
@@ -75,7 +71,7 @@ Resources:
       Type: application
       IpAddressType: ipv4
       SecurityGroups: 
-        - !ImportValue Task10ELBSGresourceID
+        - !ImportValue Task10ELBSGID
       Subnets: 
         - !ImportValue Task10SubnetPb1ID
         - !ImportValue Task10SubnetPb2ID
