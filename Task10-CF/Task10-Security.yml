@@ -1,0 +1,82 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: CF-Security
+Parameters:
+  MyIP:
+    Description: MyIPadress
+    Type: String
+    Default: 14.10.82.193/32
+  SecurityGroupIP:
+    Description: Configuration IPadress for Security Group
+    Type: String
+    Default: 0.0.0.0/0
+Resources: 
+# EC2のセキュリティグループを作成
+  Task10EC2secGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: EC2-SG
+      GroupDescription: EC2-SG
+      VpcId:  !ImportValue Task10VPCID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          Fromport: 22
+          Toport: 22
+          CidrIp: !Ref MyIP
+        - IpProtocol: tcp
+          Fromport: 80
+          Toport: 80
+          CidrIp: !Ref DefaultIP
+      Tags:
+        - Key: Name
+          Value: EC2SGfromCF
+
+# RDSのセキュリティグループを作成
+  Task10RDSsecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: RDS_sg
+      GroupDescription: RDS
+      VpcId: !ImportValue Task10VPCID
+      SecurityGroupIngress:
+        IpProtocol: tcp
+        Fromport: 3306
+        Toport: 3306
+        SourceSecurityGroupID: !Ref Task10EC2secGroup
+      Tags:
+        - Key: Name
+          Value: RDSSGfromCF
+
+# ELBのセキュリティグループを作成
+  Task10ALBsecGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupName: alb_sg 
+      GroupDescription: alb 
+      VpcId: !ImportValue Task10VPCID
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          Fromport: 80
+          Toport: 80
+          CidrIp: !Ref DefaultIP
+      Tags:
+        - Key: Name
+          Value: ALBfromCF
+          
+Outputs:
+  EC2SG:
+    Description: Information about the value
+    Value: !Ref Task10EC2secGroup
+    Export: 
+      Name: Task10EC2SGID
+
+  DBSG:
+    Description: Information about the value
+    Value:  !Ref Task10RDSsecGroup
+    Export: 
+      Name: Task10RDSSGID
+
+  ELBSG:
+    Description: Information about the value
+    Value:  !Ref Task10ALBsecGroup
+    Export: 
+      Name: Task10ELBSGID

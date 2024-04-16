@@ -1,0 +1,133 @@
+AWSTemplateFormatVersion: 2010-09-09
+Resources: 
+# VPCの作成
+  Task10VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 192.168.0.0/16
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: VPCfromCF
+
+# サブネット（パブリック）の作成
+  Task10SubnetPb1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1a"
+      VpcId: !Ref Task10VPC
+      CidrBlock: 192.168.3.0/24
+      Tags:
+        - Key: Name
+          Value: SubnetPb1fromCF
+  Task10SubnetPb2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1c"
+      VpcId: !Ref Task10VPC
+      CidrBlock: 192.168.4.0/24
+      Tags:
+        - Key: Name
+          Value: SubnetPb2fromCF
+# サブネット（プライベート）の作成
+  Task10SubnetPv1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1a"
+      VpcId: !Ref Task10VPC
+      CidrBlock: 192.168.1.0/24
+      Tags:
+        - Key: Name
+          Value: SubnetPv1fromCF
+  Task10SubnetPv2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      AvailabilityZone: "ap-northeast-1c"
+      VpcId: !Ref Task10VPC
+      CidrBlock: 192.168.2.0/24
+      Tags:
+        - Key: Name
+          Value: SubnetPv2fromCF
+          
+# インターネットゲートウェイの作成
+  Task10igw:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: IGWfromCF
+  Task10AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref Task10VPC
+      InternetGatewayId: !Ref Task10igw
+# ルートテーブルの作成
+  Task10routeTable01:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Task10VPC
+      Tags:
+        - Key: Name
+          Value: RouteTable-Pb01fromCF
+  Task10routeTable02:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Task10VPC
+      Tags:
+        - Key: Name
+          Value: RouteTable-Pb02fromCF
+# インターネットゲートウェイへルートテーブルをアタッチ
+  Task10Route01:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref Task10routeTable01
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref Task10igw
+  Task10Route02:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref Task10routeTable02
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref Task10igw
+# ルートテーブルへサブネットを関連付け
+  Task10routeTableAssoc01:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Task10SubnetPb1
+      RouteTableId: !Ref Task10routeTable01
+  Task10routeTableAssoc02:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref Task10SubnetPb2
+      RouteTableId: !Ref Task10routeTable02
+
+Outputs:
+  VPC:
+    Description: Information about the value
+    Value: !Ref Task10VPC
+    Export: 
+      Name: Task10VPCID
+
+  SubnetPb1:
+    Description: Information about the value
+    Value: !Ref Task10SubnetPb1
+    Export: 
+      Name: Task10SubnetPb1ID
+
+  SubnetPb2:
+    Description: Information about the value
+    Value: !Ref Task10SubnetPb2
+    Export: 
+      Name: Task10SubnetPb2ID
+  
+  SubnetPv1:
+    Description: Information about the value
+    Value: !Ref Task10SubnetPv1
+    Export: 
+      Name: Task10SubnetPv1ID
+
+  SubnetPv2:
+    Description: Information about the value
+    Value: !Ref Task10SubnetPv2
+    Export: 
+      Name: Task10SubnetPv2ID
