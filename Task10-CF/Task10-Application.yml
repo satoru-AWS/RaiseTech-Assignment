@@ -10,6 +10,12 @@ Parameters:
     Type: String
     NoEcho: true
 
+  AvailabilityZone:
+    Description: The Availability Zone to launch the instance in
+    Type: String
+    Default: !Select [0, !GetAZs '']
+  
+
 Resources: 
 # EC２の作成
   Task10EC2:
@@ -48,7 +54,7 @@ Resources:
     Properties:
       AllocatedStorage: 20
       DBInstanceClass: db.t3.micro
-      AvailabilityZone: "ap-northeast-1a"
+      AvailabilityZone: !Ref AvailabilityZone
       DBSubnetGroupName: !Ref Task10SubnetGroup
       Engine: mysql
       EngineVersion: "8.0.35"
