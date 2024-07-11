@@ -11,9 +11,9 @@ Parameters:
     NoEcho: true
 
   AvailabilityZone:
-    Description: The Availability Zone to launch the instance in
+    Description: Availability Zone for DB
     Type: String
-    Default: !Select [0, !GetAZs '']
+    Default: "ap-northeast-1a"
   
 
 Resources: 
