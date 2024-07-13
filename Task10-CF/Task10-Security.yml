@@ -39,9 +39,9 @@ Resources:
       VpcId: !ImportValue Task10VPCID
       SecurityGroupIngress:
        - IpProtocol: tcp
-         Fromport: 3306
-         Toport: 3306
-         SourceSecurityGroupID: !Ref Task10EC2secGroup
+         FromPort: 3306
+         ToPort: 3306
+         SourceSecurityGroupId: !Ref Task10EC2secGroup
       Tags:
         - Key: Name
           Value: RDSSGfromCF
