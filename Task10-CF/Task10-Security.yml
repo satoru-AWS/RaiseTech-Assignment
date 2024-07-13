@@ -38,10 +38,10 @@ Resources:
       GroupDescription: RDS
       VpcId: !ImportValue Task10VPCID
       SecurityGroupIngress:
-        IpProtocol: tcp
-        Fromport: 3306
-        Toport: 3306
-        SourceSecurityGroupID: !Ref Task10EC2secGroup
+       - IpProtocol: tcp
+         Fromport: 3306
+         Toport: 3306
+         SourceSecurityGroupID: !Ref Task10EC2secGroup
       Tags:
         - Key: Name
           Value: RDSSGfromCF
@@ -55,9 +55,9 @@ Resources:
       VpcId: !ImportValue Task10VPCID
       SecurityGroupIngress:
         - IpProtocol: tcp
-          Fromport: 80
-          Toport: 80
-          CidrIp: !Ref DefaultIP
+          FromPort: 80
+          ToPort: 80
+          CidrIp: !Ref SecurityGroupIP
       Tags:
         - Key: Name
           Value: ALBfromCF
