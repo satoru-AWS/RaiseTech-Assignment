@@ -1,4 +1,15 @@
 AWSTemplateFormatVersion: 2010-09-09
+Parameters:
+  AvailabilityZone1:
+    Description: Availability Zone for 1Subnet
+    Type: String
+    Default: "ap-northeast-1a"
+  
+  AvailabilityZone2:
+    Description: Availability Zone for 2Subnet
+    Type: String
+    Default: "ap-northeast-1c"
+
 Resources: 
 # VPCの作成
   Task10VPC:
@@ -14,7 +25,7 @@ Resources:
   Task10SubnetPb1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: "ap-northeast-1a"
+      AvailabilityZone: !Ref AvailabilityZone1
       VpcId: !Ref Task10VPC
       CidrBlock: 192.168.3.0/24
       Tags:
@@ -23,7 +34,7 @@ Resources:
   Task10SubnetPb2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: "ap-northeast-1c"
+      AvailabilityZone: !Ref AvailabilityZone2
       VpcId: !Ref Task10VPC
       CidrBlock: 192.168.4.0/24
       Tags:
@@ -33,7 +44,7 @@ Resources:
   Task10SubnetPv1:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: "ap-northeast-1a"
+      AvailabilityZone: !Ref AvailabilityZone1
       VpcId: !Ref Task10VPC
       CidrBlock: 192.168.1.0/24
       Tags:
@@ -42,7 +53,7 @@ Resources:
   Task10SubnetPv2:
     Type: AWS::EC2::Subnet
     Properties:
-      AvailabilityZone: "ap-northeast-1c"
+      AvailabilityZone: !Ref AvailabilityZone2
       VpcId: !Ref Task10VPC
       CidrBlock: 192.168.2.0/24
       Tags:

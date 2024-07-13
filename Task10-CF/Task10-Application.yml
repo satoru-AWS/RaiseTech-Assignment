@@ -87,7 +87,6 @@ Resources:
 # ターゲットグループの作成
   Task10tg:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    DependsOn: Task10EC2
     Properties:
       HealthCheckEnabled: true
       HealthCheckIntervalSeconds: 30
@@ -117,7 +116,7 @@ Resources:
     Properties:
       DefaultActions: 
         - TargetGroupArn: !Ref Task10tg
-          type: forward
+          Type: forward
       LoadBalancerArn: !Ref Task10ALB
       Port: 80
       Protocol: HTTP
