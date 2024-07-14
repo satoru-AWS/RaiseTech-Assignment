@@ -5,11 +5,6 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: String
 
-  DBpassword:
-    Description: DateBase Password
-    Type: String
-    NoEcho: true
-
   AvailabilityZone:
     Description: Availability Zone for DB
     Type: String
@@ -59,7 +54,7 @@ Resources:
       Engine: mysql
       EngineVersion: "8.0.35"
       MasterUsername: admin
-      MasterUserPassword: !Ref DBpassword
+      MasterUserPassword: '{{resolve:secretsmanager:raisetech/cf/mysql:SecretString:password}}'
       MultiAZ: false
       StorageType: gp2
       VPCSecurityGroups:
