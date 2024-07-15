@@ -1,9 +1,9 @@
 # 課題12  
 ## 内容  
 CicleCIの[サンプルコンフィグ](sample-config.yml)を使用して、正しく動作するようにリポジトリに組み込む。  
-[!NOTE]    
-cloudformation/*.ymlを自分のディレクトリ名に変更する  
-cloudformation/*.yml→Task10-CF/*.yml    
+>[!NOTE]  
+>cloudformation/*.ymlを自分のディレクトリ名に変更する  
+>cloudformation/*.yml→Task10-CF/*.yml  
 ## 処理結果  
 ### エラーの発生 
 <dl> 
