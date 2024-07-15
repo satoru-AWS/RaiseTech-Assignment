@@ -5,19 +5,11 @@ CicleCIの[サンプルコンフィグ](sample-config.yml)を使用して、正�
 >cloudformation/*.ymlを自分のディレクトリ名に変更する  
 >cloudformation/*.yml→Task10-CF/*.yml  
 ## 処理結果  
-### エラーの発生 
-<dl> 
- <dt>エラー内容</dt>
- <dd>1. RDSのパスワードを動的参照にすること</dd>
- <dd>2. プロパティの誤り</dd>
-</dl>  
-<details><summary>参考画像</summary>
-  
-```rb
-![エラー](img3/lecture12-1.png)
-```
-</details>  
-
+### エラーの発生  
+* ハードコーティング（画像なし）  
+* RDSのパスワードを動的参照にすること  
+* プロパティの誤り(大文字・小文字の表記誤り)  
+![エラー](img3/lecture12-1.png)  
 ### エラーの解消  
 エラー内容を解消後、再度CircleCIを実行  
 ![成功](img3/lecture12-2.png)  
