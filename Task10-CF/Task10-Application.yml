@@ -5,10 +5,11 @@ Parameters:
     Description: The EC2 Key Pair to allow SSH access to the instance
     Type: String
 
-  DBpassword:
-    Description: DateBase Password
+  AvailabilityZone:
+    Description: Availability Zone for DB
     Type: String
-    NoEcho: true
+    Default: "ap-northeast-1a"
+  
 
 Resources: 
 # EC２の作成
@@ -48,12 +49,12 @@ Resources:
     Properties:
       AllocatedStorage: 20
       DBInstanceClass: db.t3.micro
-      AvailabilityZone: "ap-northeast-1a"
+      AvailabilityZone: !Ref AvailabilityZone
       DBSubnetGroupName: !Ref Task10SubnetGroup
       Engine: mysql
       EngineVersion: "8.0.35"
       MasterUsername: admin
-      MasterUserPassword: !Ref DBpassword
+      MasterUserPassword: '{{resolve:secretsmanager:raisetech/cf/mysql:SecretString:password}}'
       MultiAZ: false
       StorageType: gp2
       VPCSecurityGroups:
@@ -81,7 +82,6 @@ Resources:
 # ターゲットグループの作成
   Task10tg:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    DependsOn: Task10EC2
     Properties:
       HealthCheckEnabled: true
       HealthCheckIntervalSeconds: 30
@@ -111,7 +111,7 @@ Resources:
     Properties:
       DefaultActions: 
         - TargetGroupArn: !Ref Task10tg
-          type: forward
+          Type: forward
       LoadBalancerArn: !Ref Task10ALB
       Port: 80
       Protocol: HTTP
